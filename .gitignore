@@ -131,3 +131,4 @@ dmypy.json
 book/*
 pdf_source/*
 log/*
+img_source/*

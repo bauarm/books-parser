@@ -22,3 +22,17 @@ pip install -r requirement.txt
 ```bash
 python pdfSpliter.py
 ```
+#### Файл pdfToImg.py
+##### Перегоняет PDF в PNG картинки
+```bash
+python pdfToImg.py
+```
+Для работы библиотеки [Wand](https://pypi.org/project/Wand/) необходимо приложение [ImageMagick](https://imagemagick.org/script/download.php) . На Ubuntu ImageMagick обычно установленно изначально. Возможны проблемы с [настройками безопасности](https://imagemagick.org/script/security-policy.php). Необходима правка файла /etc/ImageMagick-6/policy.xml 
+Данная строка
+```xml
+<policy domain="coder" rights="none" pattern="PDF" />
+```
+Заменяется этой
+```xml
+<policy domain="coder" rights="read|write" pattern="PDF" />
+```
