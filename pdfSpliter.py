@@ -1,42 +1,33 @@
 import os
 from PyPDF2 import PdfFileReader, PdfFileWriter
 
+def log_writer(book,text):
+		with open(curDir+"/log/"+'LOG_'+book+'.txt', 'a', newline='', encoding='utf-8-sig') as f:
+			f.write(text)
 
+curDir=os.getcwd()
+book_patch = curDir+"/book/" 
+pdf_document = os.listdir(book_patch)
+pdf = PdfFileReader(open(book_patch+pdf_document[0],'rb'))
+pageCount=pdf.getNumPages()
+print(pdf_document,'page - ',pageCount)
+log_writer(str(pdf_document[0])[0:-4],str(pdf_document[0])[0:-4]+'\n')
+log_writer(str(pdf_document[0])[0:-4],'Page in this book - '+str(pageCount)+'\n')
 
-def getThisPage():
-	arr=[] #сюда надо добавить страницы для обработки
-	
-	curDir=os.getcwd()
-	book_patch = curDir+"/book/" 
-	pdf_document = os.listdir(book_patch)
-	pdf = PdfFileReader(open(book_patch+pdf_document[0],'rb'))
-	pageCount=pdf.getNumPages()
-	print(pdf_document,'page - ',pageCount)
-	
-	if len(arr)>0:
-		for page in arr:  
-			pdf_writer = PdfFileWriter()
-			current_page = pdf.getPage(page)
-			pdf_writer.addPage(current_page)
-			outputFilename = curDir+"/pdf_source/{}.pdf".format(page)
-			with open(outputFilename, "wb") as out:
-				pdf_writer.write(out)
-				print("created", outputFilename)
-				
+def readyPage():
+	if(len(pdf_document)>0):
+		for page in range(pageCount):
+			getThisPage(page)
 
-	else:
-		for page in range(pageCount):  
-			pdf_writer = PdfFileWriter()
-			current_page = pdf.getPage(page)
-			pdf_writer.addPage(current_page)
-			outputFilename = curDir+"/pdf_source/{}.pdf".format(page + 1)
-			with open(outputFilename, "wb") as out:
-				pdf_writer.write(out)
-				print(page + 1,'/',pageCount,"created", outputFilename)
-
-
-
-
-
+def getThisPage(num):
+	pdf_writer = PdfFileWriter()
+	current_page = pdf.getPage(num)
+	pdf_writer.addPage(current_page)
+	outputFilename = curDir+"/pdf_source/{}.pdf".format(num + 1)
+	with open(outputFilename, "wb") as out:
+		pdf_writer.write(out)
+		print(num + 1,'/',pageCount,"created", outputFilename)
+		log_writer(str(pdf_document[0])[0:-4],str(num + 1)+'/'+str(pageCount)+" created "+outputFilename+'\n')
+		
 if __name__ == "__main__":
-    getThisPage()
+	readyPage()
